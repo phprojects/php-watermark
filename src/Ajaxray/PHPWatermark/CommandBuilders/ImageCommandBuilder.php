@@ -70,8 +70,8 @@ class ImageCommandBuilder extends AbstractCommandBuilder
 
     protected function getDuelTextColor(array $options=[])
     {
-        $textShadowRGBA=[255,255,255,$this->getOpacity()];
-        $textColorRGBA=[0,0,0,$this->getOpacity()];
+        $textShadowRGBA=[255,255,255,$this->getOpacity()];//白色
+        $textColorRGBA=[0,0,0,$this->getOpacity()];//黑色
         if(isset($options['textShadowRGBA'])){
             if(!is_array($options['textShadowRGBA'])) $options['textShadowRGBA']=explode(',',$options['textShadowRGBA'],4);
             for($i=0;$i<4;$i++){
