@@ -87,7 +87,7 @@ class ImageCommandBuilder extends AbstractCommandBuilder
             }
         }
         $textShadow="rgba({$textShadowRGBA[0]},{$textShadowRGBA[1]},{$textShadowRGBA[2]},{$textShadowRGBA[3]})";
-        $textColor="rgba({$textColorRGBA[0]},{$textColorRGBA[1]},{$textColorRGBA[2]},{$textColorRGBA[3]}})";
+        $textColor="rgba({$textColorRGBA[0]},{$textColorRGBA[1]},{$textColorRGBA[2]},{$textColorRGBA[3]})";
         return [
             "fill \"$textShadow\"",//text shadow
             "fill \"$textColor\"",//text color
