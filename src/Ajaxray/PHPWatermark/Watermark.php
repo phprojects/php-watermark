@@ -68,7 +68,8 @@ class Watermark
         return $this;
     }
 
-    static public function escapeShellArg($arg){
+    static public function escapeShellArg($arg,$singleQuotes=false){
+        if(!$singleQuotes) return escapeshellarg($arg);
         return "'".addcslashes($arg,"'")."'";
     }
 
