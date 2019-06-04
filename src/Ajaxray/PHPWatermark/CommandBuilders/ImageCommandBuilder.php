@@ -71,8 +71,8 @@ class ImageCommandBuilder extends AbstractCommandBuilder
     protected function getDuelTextColor()
     {
         return [
-            "fill \"rgba\\(255,255,255,{$this->getOpacity()}\\)\"",
-            "fill \"rgba\\(0,0,0,{$this->getOpacity()}\\)\"",
+            "fill \"rgba(255,255,255,{$this->getOpacity()})\"",
+            "fill \"rgba(0,0,0,{$this->getOpacity()})\"",
         ];
     }
 
