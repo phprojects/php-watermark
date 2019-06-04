@@ -53,6 +53,8 @@ class Watermark
     private $commander;
     private $debug = false;
 
+    static $commandPrefix='';
+
     /**
      * Watermark constructor.
      *

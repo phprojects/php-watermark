@@ -49,25 +49,25 @@ class PDFCommandBuilderTest extends TestCase
     public function testTextWatermarking()
     {
         $execCommand = $this->getTxtCommandWithOption([]);
-        $this->assertEquals($this->cmdText, $execCommand);
+        $this->assertEquals(Watermark::$commandPrefix.$this->cmdText, $execCommand);
     }
 
     public function testTextWatermarkingWithRotate()
     {
         $execCommand = $this->getTxtCommandWithOption(['rotate' => 30]);
-        $this->assertEquals(str_replace('-annotate ', '-annotate 30x30', $this->cmdText), $execCommand);
+        $this->assertEquals(str_replace('-annotate ', '-annotate 30x30', Watermark::$commandPrefix.$this->cmdText), $execCommand);
     }
 
     public function testTextWatermarkingConfigureOpacity()
     {
         $execCommand = $this->getTxtCommandWithOption(['opacity' => .6]);
-        $this->assertEquals(str_replace(',0.3)', ',0.6)', $this->cmdText), $execCommand);
+        $this->assertEquals(str_replace(',0.3)', ',0.6)', Watermark::$commandPrefix.$this->cmdText), $execCommand);
     }
 
     public function testTextWatermarkingConfigureFont()
     {
         $execCommand = $this->getTxtCommandWithOption(['fontSize' => 48, 'font' => 'monospace']);
-        $this->assertEquals(str_replace(['24', 'Arial'], ['48', 'monospace'], $this->cmdText), $execCommand);
+        $this->assertEquals(str_replace(['24', 'Arial'], ['48', 'monospace'], Watermark::$commandPrefix.$this->cmdText), $execCommand);
     }
 
     public function testTextWatermarkingConfigurePosition()
@@ -77,13 +77,13 @@ class PDFCommandBuilderTest extends TestCase
             'offsetX' => '220',
             'offsetY' => '50',
         ]);
-        $this->assertEquals(str_replace(['Center', '+0+0', '+1+1'], ['SouthEast', '+220+50', '+221+51'], $this->cmdText), $execCommand);
+        $this->assertEquals(str_replace(['Center', '+0+0', '+1+1'], ['SouthEast', '+220+50', '+221+51'], Watermark::$commandPrefix.$this->cmdText), $execCommand);
     }
 
     public function testImageWatermarkingBasic()
     {
         $execCommand = $this->builder->getImageMarkCommand('path/logo.png', 'path/output.pdf', $this->options);
-        $this->assertEquals($this->cmdImg, $execCommand);
+        $this->assertEquals(Watermark::$commandPrefix.$this->cmdImg, $execCommand);
     }
 
     public function testImageWatermarkingWithLocationChange()
@@ -93,14 +93,14 @@ class PDFCommandBuilderTest extends TestCase
             'offsetX'  => 50,
             'offsetY'  => 100,
         ]);
-        $expected = str_replace('-gravity Center -geometry +0+0', '-gravity SouthEast -geometry +50+100', $this->cmdImg);
+        $expected = str_replace('-gravity Center -geometry +0+0', '-gravity SouthEast -geometry +50+100', Watermark::$commandPrefix.$this->cmdImg);
         $this->assertEquals($expected, $execCommand);
     }
 
     public function testImageWatermarkingWithOpacityChange()
     {
         $execCommand = $this->getImgCommandWithOption(['opacity' => .7]);
-        $expected = str_replace('-evaluate set 30%', '-evaluate set 70%', $this->cmdImg);
+        $expected = str_replace('-evaluate set 30%', '-evaluate set 70%', Watermark::$commandPrefix.$this->cmdImg);
 
         $this->assertEquals($expected, $execCommand);
     }

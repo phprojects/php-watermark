@@ -32,7 +32,7 @@ class ImageCommandBuilder extends AbstractCommandBuilder
         $tile = $this->getTile();
         $opacity = $this->getImageOpacity();
 
-        return "composite -$anchor -$offset -$opacity $tile $marker $source $destination";
+        return Watermark::$commandPrefix."composite -$anchor -$offset -$opacity $tile $marker $source $destination";
     }
 
     /**
@@ -59,10 +59,10 @@ class ImageCommandBuilder extends AbstractCommandBuilder
 
         if($this->isTiled()) {
             $size = $this->getTextTileSize();
-            $command = "convert $size xc:none  $font -$anchor $draw miff:- ";
-            $command .= " | composite -tile - $source  $destination";
+            $command = Watermark::$commandPrefix."convert $size xc:none  $font -$anchor $draw miff:- ";
+            $command .= " | ".Watermark::$commandPrefix."composite -tile - $source  $destination";
         } else {
-            $command = "convert $source $font $draw $destination";
+            $command = Watermark::$commandPrefix."convert $source $font $draw $destination";
         }
 
         return $command;

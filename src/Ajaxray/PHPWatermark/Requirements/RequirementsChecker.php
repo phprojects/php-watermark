@@ -9,12 +9,14 @@
 
 namespace Ajaxray\PHPWatermark\Requirements;
 
+use Ajaxray\PHPWatermark\Watermark;
+
 class RequirementsChecker
 {
 
     public function checkImagemagickInstallation()
     {
-        exec("convert -version", $out, $rcode);
+        exec(Watermark::$commandPrefix.'convert -version', $out, $rcode);
 
         if ($rcode) {
             throw new \BadFunctionCallException("ImageMagick not found in this system.");

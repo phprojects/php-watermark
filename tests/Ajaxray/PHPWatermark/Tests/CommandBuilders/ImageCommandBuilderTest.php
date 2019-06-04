@@ -50,7 +50,7 @@ class ImageCommandBuilderTest extends TestCase
     public function testBasicWatermarkingWithText()
     {
         $execCommand = $this->getTxtCommandWithOption([]);
-        $this->assertEquals($this->cmdText, $execCommand);
+        $this->assertEquals(Watermark::$commandPrefix.$this->cmdText, $execCommand);
     }
 
     public function testWatermarkingWithChangingTextLocation()
@@ -60,41 +60,41 @@ class ImageCommandBuilderTest extends TestCase
             'offsetX'  => 10,
             'offsetY'  => 15,
         ]);
-        $expected = str_replace(['gravity Center', 'text 0,0', 'text 1,1'], ['gravity SouthWest', 'text 10,15', 'text 11,16'], $this->cmdText);
+        $expected = str_replace(['gravity Center', 'text 0,0', 'text 1,1'], ['gravity SouthWest', 'text 10,15', 'text 11,16'], Watermark::$commandPrefix.$this->cmdText);
         $this->assertEquals($expected, $execCommand);
     }
 
     public function testWatermarkingWithChangingTextOpacity()
     {
         $execCommand = $this->getTxtCommandWithOption(['opacity' => .7]);
-        $expected = str_replace(['255,255,255,0.3', '0,0,0,0.3'], ['255,255,255,0.7', '0,0,0,0.7'], $this->cmdText);
+        $expected = str_replace(['255,255,255,0.3', '0,0,0,0.3'], ['255,255,255,0.7', '0,0,0,0.7'], Watermark::$commandPrefix.$this->cmdText);
         $this->assertEquals($expected, $execCommand);
     }
 
     public function testWatermarkingWithChangingTextRotation()
     {
         $execCommand = $this->getTxtCommandWithOption(['rotate' => 15]);
-        $expected = str_replace('-draw "', '-draw "rotate 15', $this->cmdText);
+        $expected = str_replace('-draw "', '-draw "rotate 15', Watermark::$commandPrefix.$this->cmdText);
         $this->assertEquals($expected, $execCommand);
     }
 
     public function testWatermarkingWithChangingTextFont()
     {
         $execCommand = $this->getTxtCommandWithOption(['font' => 'sans-serif', 'fontSize' => 36]);
-        $expected = str_replace('-pointsize 24 -font \'Arial\'', '-pointsize 36 -font \'sans-serif\'', $this->cmdText);
+        $expected = str_replace('-pointsize 24 -font \'Arial\'', '-pointsize 36 -font \'sans-serif\'', Watermark::$commandPrefix.$this->cmdText);
         $this->assertEquals($expected, $execCommand);
     }
 
     public function testWatermarkingWithTiledText()
     {
         $execCommand = $this->getTxtCommandWithOption(['tiled' => true]);
-        $this->assertEquals($this->cmdTiledText, $execCommand);
+        $this->assertEquals(Watermark::$commandPrefix.$this->cmdTiledText, $execCommand);
     }
 
     public function testBasicWatermarkingWithImage()
     {
         $execCommand = $this->getImgCommandWithOption([]);
-        $this->assertEquals($this->cmdImg, $execCommand);
+        $this->assertEquals(Watermark::$commandPrefix.$this->cmdImg, $execCommand);
     }
 
     public function testWatermarkingWithChangingImageLocation()
@@ -104,21 +104,21 @@ class ImageCommandBuilderTest extends TestCase
             'offsetX'  => 100,
             'offsetY'  => 150,
         ]);
-        $expected = str_replace(['gravity Center', '+0+0'], ['gravity NorthEast', '+100+150'], $this->cmdImg);
+        $expected = str_replace(['gravity Center', '+0+0'], ['gravity NorthEast', '+100+150'], Watermark::$commandPrefix.$this->cmdImg);
         $this->assertEquals($expected, $execCommand);
     }
 
     public function testWatermarkingWithChangingImageOpacity()
     {
         $execCommand = $this->getImgCommandWithOption(['opacity' => .5]);
-        $expected = str_replace('30%', '50%', $this->cmdImg);
+        $expected = str_replace('30%', '50%', Watermark::$commandPrefix.$this->cmdImg);
         $this->assertEquals($expected, $execCommand);
     }
 
     public function testWatermarkingWithChangingImageStyle()
     {
         $execCommand = $this->getImgCommandWithOption(['style' => Watermark::STYLE_IMG_COLORLESS]);
-        $expected = str_replace('-dissolve', '-watermark', $this->cmdImg);
+        $expected = str_replace('-dissolve', '-watermark', Watermark::$commandPrefix.$this->cmdImg);
         $this->assertEquals($expected, $execCommand);
     }
 
