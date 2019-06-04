@@ -68,6 +68,10 @@ class Watermark
         return $this;
     }
 
+    static public function escapeShellArg($arg){
+        return "'".addcslashes($arg,"'")."'";
+    }
+
     public function withText($text, $writeTo = null)
     {
         $destination = $writeTo ?: $this->source;
@@ -257,6 +261,16 @@ class Watermark
         return $this;
     }
 
+    /**
+     * @param string $encoding Text Color RGBA
+     * @return Watermark
+     */
+    public function setEncoding($encoding='UTF-8')
+    {
+        $this->options['encoding']=$encoding;
+
+        return $this;
+    }
 
     /**
      * @param bool $debug

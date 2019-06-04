@@ -24,7 +24,7 @@ class PDFCommandBuilder extends AbstractCommandBuilder
     public function getImageMarkCommand($markerImage, $output, array $options)
     {
         list($source, $destination) = $this->prepareContext($output, $options);
-        $marker = escapeshellarg($markerImage);
+        $marker = Watermark::escapeShellArg($markerImage);
 
         $opacity = $this->getMarkerOpacity();
         $anchor = $this->getAnchor();
@@ -44,15 +44,16 @@ class PDFCommandBuilder extends AbstractCommandBuilder
     public function getTextMarkCommand($text, $output, array $options)
     {
         list($source, $destination) = $this->prepareContext($output, $options);
-        $text = escapeshellarg($text);
+        $text = Watermark::escapeShellArg($text);
+        $encoding = $this->getEncoding();
 
         $anchor = $this->getAnchor();
         $rotate = $this->getRotate();
         $font = $this->getFont();
-        list($light, $dark) = $this->getDuelTextColor();
+        list($light, $dark) = $this->getDuelTextColor($options);
         list($offsetLight, $offsetDark) = $this->getDuelTextOffset();
 
-        return Watermark::$commandPrefix."convert $source -$anchor -quality 100 -density 100 $font -$light -annotate {$rotate}{$offsetLight} $text -$dark -annotate {$rotate}{$offsetDark} $text  $destination";
+        return Watermark::$commandPrefix."convert $encoding $source -$anchor -quality 100 -density 100 $font -$light -annotate {$rotate}{$offsetLight} $text -$dark -annotate {$rotate}{$offsetDark} $text $destination";
     }
 
     private function getMarkerOpacity()
@@ -75,11 +76,4 @@ class PDFCommandBuilder extends AbstractCommandBuilder
         return empty($this->options['rotate']) ? '' : "{$this->options['rotate']}x{$this->options['rotate']}";
     }
 
-    protected function getDuelTextColor()
-    {
-        return [
-            "fill \"rgba(255,255,255,{$this->getOpacity()})\"",
-            "fill \"rgba(0,0,0,{$this->getOpacity()})\"",
-        ];
-    }
 }

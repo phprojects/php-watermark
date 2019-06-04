@@ -24,7 +24,7 @@ class ImageCommandBuilder extends AbstractCommandBuilder
     public function getImageMarkCommand($markerImage, $output, array $options)
     {
         list($source, $destination) = $this->prepareContext($output, $options);
-        $marker = escapeshellarg($markerImage);
+        $marker = Watermark::escapeShellArg($markerImage);
 
         $anchor = $this->getAnchor();
         $offset = $this->getImageOffset();
@@ -46,7 +46,8 @@ class ImageCommandBuilder extends AbstractCommandBuilder
     public function getTextMarkCommand($text, $output, array $options)
     {
         list($source, $destination) = $this->prepareContext($output, $options);
-        $text = escapeshellarg($text);
+        $text = Watermark::escapeShellArg($text);
+        $encoding = $this->getEncoding();
 
         $anchor = $this->getAnchor();
         $rotate = $this->getRotate();
@@ -55,7 +56,7 @@ class ImageCommandBuilder extends AbstractCommandBuilder
         list($light, $dark) = $this->getDuelTextColor($options);
         list($offsetLight, $offsetDark) = $this->getDuelTextOffset();
 
-        $draw = " -draw \"$rotate $anchor $light text $offsetLight $text $dark text $offsetDark $text\" ";
+        $draw = "$encoding -draw \"$rotate $anchor $light text $offsetLight $text $dark text $offsetDark $text\" ";
 
         if($this->isTiled()) {
             $size = $this->getTextTileSize();
@@ -66,32 +67,6 @@ class ImageCommandBuilder extends AbstractCommandBuilder
         }
 
         return $command;
-    }
-
-    protected function getDuelTextColor(array $options=[])
-    {
-        $textShadowRGBA=[255,255,255,$this->getOpacity()];//白色
-        $textColorRGBA=[0,0,0,$this->getOpacity()];//黑色
-        if(isset($options['textShadowRGBA'])){
-            if(!is_array($options['textShadowRGBA'])) $options['textShadowRGBA']=explode(',',$options['textShadowRGBA'],4);
-            for($i=0;$i<4;$i++){
-                if(!isset($options['textShadowRGBA'][$i])) break;
-                $textShadowRGBA[$i]=$options['textShadowRGBA'][$i];
-            }
-        }
-        if(isset($options['textColorRGBA'])){
-            if(!is_array($options['textColorRGBA'])) $options['textColorRGBA']=explode(',',$options['textColorRGBA'],4);
-            for($i=0;$i<4;$i++){
-                if(!isset($options['textColorRGBA'][$i])) break;
-                $textColorRGBA[$i]=$options['textColorRGBA'][$i];
-            }
-        }
-        $textShadow="rgba({$textShadowRGBA[0]},{$textShadowRGBA[1]},{$textShadowRGBA[2]},{$textShadowRGBA[3]})";
-        $textColor="rgba({$textColorRGBA[0]},{$textColorRGBA[1]},{$textColorRGBA[2]},{$textColorRGBA[3]})";
-        return [
-            "fill \"$textShadow\"",//text shadow
-            "fill \"$textColor\"",//text color
-        ];
     }
 
     /**
