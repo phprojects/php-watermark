@@ -236,6 +236,29 @@ class Watermark
     }
 
     /**
+     * @param array|string $textShadowRGBA Text Shadow RGBA
+     * @return Watermark
+     */
+    public function setTextShadow($textShadowRGBA)
+    {
+        $this->options['textShadowRGBA'] = $textShadowRGBA;
+
+        return $this;
+    }
+
+    /**
+     * @param array|string $textColorRGBA Text Color RGBA
+     * @return Watermark
+     */
+    public function setTextColor($textColorRGBA)
+    {
+        $this->options['textColorRGBA'] = $textColorRGBA;
+
+        return $this;
+    }
+
+
+    /**
      * @param bool $debug
      * @return Watermark
      */

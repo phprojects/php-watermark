@@ -52,7 +52,7 @@ class ImageCommandBuilder extends AbstractCommandBuilder
         $rotate = $this->getRotate();
         $font = $this->getFont();
 
-        list($light, $dark) = $this->getDuelTextColor();
+        list($light, $dark) = $this->getDuelTextColor($options);
         list($offsetLight, $offsetDark) = $this->getDuelTextOffset();
 
         $draw = " -draw \"$rotate $anchor $light text $offsetLight $text $dark text $offsetDark $text\" ";
@@ -68,11 +68,29 @@ class ImageCommandBuilder extends AbstractCommandBuilder
         return $command;
     }
 
-    protected function getDuelTextColor()
+    protected function getDuelTextColor(array $options=[])
     {
+        $textShadowRGBA=[255,255,255,$this->getOpacity()];
+        $textColorRGBA=[0,0,0,$this->getOpacity()];
+        if(isset($options['textShadowRGBA'])){
+            if(!is_array($options['textShadowRGBA'])) $options['textShadowRGBA']=explode(',',$options['textShadowRGBA'],4);
+            for($i=0;$i<4;$i++){
+                if(!isset($options['textShadowRGBA'][$i])) break;
+                $textShadowRGBA[$i]=$options['textShadowRGBA'][$i];
+            }
+        }
+        if(isset($options['textColorRGBA']) && is_array($options['textColorRGBA'])){
+            if(!is_array($options['textColorRGBA'])) $options['textColorRGBA']=explode(',',$options['textColorRGBA'],4);
+            for($i=0;$i<4;$i++){
+                if(!isset($options['textColorRGBA'][$i])) break;
+                $textColorRGBA[$i]=$options['textColorRGBA'][$i];
+            }
+        }
+        $textShadow="rgba({$textShadowRGBA[0]},{$textShadowRGBA[1]},{$textShadowRGBA[2]},{$textShadowRGBA[3]})";
+        $textColor="rgba({$textColorRGBA[0]},{$textColorRGBA[1]},{$textColorRGBA[2]},{$textColorRGBA[3]}})";
         return [
-            "fill \"rgba(255,255,255,{$this->getOpacity()})\"",
-            "fill \"rgba(0,0,0,{$this->getOpacity()})\"",
+            "fill \"$textShadow\"",//text shadow
+            "fill \"$textColor\"",//text color
         ];
     }
 
