@@ -79,7 +79,7 @@ class ImageCommandBuilder extends AbstractCommandBuilder
                 $textShadowRGBA[$i]=$options['textShadowRGBA'][$i];
             }
         }
-        if(isset($options['textColorRGBA']) && is_array($options['textColorRGBA'])){
+        if(isset($options['textColorRGBA'])){
             if(!is_array($options['textColorRGBA'])) $options['textColorRGBA']=explode(',',$options['textColorRGBA'],4);
             for($i=0;$i<4;$i++){
                 if(!isset($options['textColorRGBA'][$i])) break;
