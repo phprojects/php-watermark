@@ -55,8 +55,9 @@ class ImageCommandBuilder extends AbstractCommandBuilder
 
         list($light, $dark) = $this->getDuelTextColor($options);
         list($offsetLight, $offsetDark) = $this->getDuelTextOffset();
-
-        $draw = "$encoding -draw \"$rotate $anchor $light text $offsetLight $text $dark text $offsetDark $text\" ";
+        $draw = "$rotate $anchor $light text $offsetLight $text $dark text $offsetDark $text";
+        $draw = str_replace('"',"'",$draw);
+        $draw = "$encoding -draw \"$draw\" ";
 
         if($this->isTiled()) {
             $size = $this->getTextTileSize();
