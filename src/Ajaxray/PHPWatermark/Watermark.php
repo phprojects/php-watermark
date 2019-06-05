@@ -77,15 +77,13 @@ class Watermark
     {
         $destination = $writeTo ?: $this->source;
         $this->ensureWritable(($writeTo ? dirname($destination) : $destination));
-
+        $command = $this->commander->getTextMarkCommand($text, $destination, $this->options);
+        $output = $returnCode = null;
+        exec($command, $output, $returnCode);
         if($this->debug) {
-            return $this->commander->getTextMarkCommand($text, $destination, $this->options);
-        } else {
-            $output = $returnCode = null;
-            exec($this->commander->getTextMarkCommand($text, $destination, $this->options), $output, $returnCode);
-
-            return (empty($output) && $returnCode === 0);
+            echo var_dump(compact('command','output','returnCode')),PHP_EOL;
         }
+        return (empty($output) && $returnCode === 0);
     }
 
     public function withImage($marker, $writeTo = null)
@@ -93,15 +91,13 @@ class Watermark
         $destination = $writeTo ?: $this->source;
         $this->ensureExists($marker);
         $this->ensureWritable(($writeTo ? dirname($destination) : $destination));
-
+        $command = $this->commander->getImageMarkCommand($marker, $destination, $this->options);
+        $output = $returnCode = null;
+        exec($command, $output, $returnCode);
         if($this->debug) {
-            return $this->commander->getImageMarkCommand($marker, $destination, $this->options);
-        } else {
-            $output = $returnCode = null;
-            exec($this->commander->getImageMarkCommand($marker, $destination, $this->options), $output, $returnCode);
-
-            return (empty($output) && $returnCode === 0);
+            echo var_dump(compact('command','output','returnCode')),PHP_EOL;
         }
+        return (empty($output) && $returnCode === 0);
     }
 
     /**
@@ -117,11 +113,11 @@ class Watermark
 
         if (preg_match(self::PATTERN_MIME_IMAGE, $mimeType)) {
             return new CommandBuilders\ImageCommandBuilder($sourcePath);
-        } elseif (preg_match(self::PATTERN_MIME_PDF, $mimeType)) {
+        } 
+        if (preg_match(self::PATTERN_MIME_PDF, $mimeType)) {
             return new CommandBuilders\PDFCommandBuilder($sourcePath);
-        } else {
-            throw new \InvalidArgumentException("The source file type $mimeType is not supported.");
-        }
+        } 
+        throw new \InvalidArgumentException("The source file type $mimeType is not supported.");
     }
 
     /**
