@@ -54,6 +54,7 @@ class Watermark
     private $debug = false;
 
     static $commandPrefix='';
+    static $isWindows=null;
 
     /**
      * Watermark constructor.
@@ -62,6 +63,7 @@ class Watermark
      */
     public function __construct($source)
     {
+        if(self::$isWindows===null) self::$isWindows=stripos(PHP_OS,'win')!==false;
         $this->source = $source;
         $this->commander = $this->getCommandBuilder($source);
 

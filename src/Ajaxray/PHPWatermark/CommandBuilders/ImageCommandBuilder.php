@@ -46,7 +46,7 @@ class ImageCommandBuilder extends AbstractCommandBuilder
     public function getTextMarkCommand($text, $output, array $options)
     {
         list($source, $destination) = $this->prepareContext($output, $options);
-        $text = Watermark::escapeShellArg($text,true);
+        $text = Watermark::escapeShellArg($text,Watermark::$isWindows);
         $encoding = $this->getEncoding();
 
         $anchor = $this->getAnchor();
